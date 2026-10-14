@@ -1,0 +1,25 @@
+# Secrets and environment files
+.env
+.env.*
+
+# Git metadata
+.git/
+
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Tests, coverage, and lint caches
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Editor and operating-system files
+.DS_Store
+.vscode/
+.idea/
