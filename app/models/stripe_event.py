@@ -17,5 +17,7 @@ class StripeEvent(TimestampMixin, Base):
     stripe_event_id: Mapped[str] = mapped_column(String(255), nullable=False)
     event_type: Mapped[str] = mapped_column(String(128), nullable=False)
     stripe_created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
-    payload: Mapped[dict[str, Any]] = mapped_column(JSON().with_variant(JSONB, "postgresql"), nullable=False)
+    payload: Mapped[dict[str, Any]] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"), nullable=False
+    )
     processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
