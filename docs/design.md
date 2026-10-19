@@ -17,6 +17,8 @@ flowchart LR
 
 Migrations will create `tenants`, `api_keys`, `plans`, `subscriptions`, `usage_events`, `stripe_events`, and a tenant-month quota-state/rollup row. Tenant-owned records carry `tenant_id`; repositories always scope queries by it. An API key is supplied in a request header, looked up by a secure one-way hash, and resolves the tenant; clients never supply `tenant_id`. Bootstrap/demo keys are generated once, shown only through a secure documented local setup step, and only their hashes are persisted or logged.
 
+**Initial subscription lifecycle:** A tenant created through the local bootstrap script receives the Free plan with an `active` local subscription so that local development and testing can begin immediately. A paid plan upgrade must be confirmed by a verified Stripe webhook; an unverified client request must never activate a paid plan. If a subscription becomes inactive or unpaid, billable requests return HTTP `402 Payment Required`. Exceeding an otherwise active plan's monthly quota returns HTTP `429 Too Many Requests`. Stripe event processing must account for duplicate and out-of-order events before updating local subscription state.
+
 `usage_events` records the UTC calendar month, API-call quantity, token breakdown, payload fingerprint, idempotency key, response snapshot, and integer cost. The usage window is `[first day of UTC month, first day of next UTC month)` for both writes and rollups. Constraints include unique `(tenant_id, idempotency_key)` and unique Stripe event ID.
 
 ## Plans, API, and layers
@@ -51,4 +53,8 @@ Later pytest/EVIDENCE work will cover the five official Section 12 acceptance cr
 4. **Webhook security and replay:** A forged webhook with an invalid signature returns HTTP 400 and changes nothing. Replaying a valid Stripe event processes it only once.
 5. **Pricing:** Verify exact totals from the pinned pricing rules, including cheaper cached input and reasoning tokens priced as output without double-counting. Verify that `GET /usage` reports the expected values.
 
-The broader verification plan also covers tenant isolation, authentication, payload conflicts, concurrent quota boundaries, out-of-order events, and alert retries. These checks do not substitute for the five official probes. Docker Compose, migrations, endpoints, tests, `README.md`, `.env.example`, `capstone.yaml`, and `EVIDENCE.md` are intentionally deferred. Human review remains needed for the project-selected prices/Pro limits, Stripe retrieval/reconciliation behavior, and secure local bootstrap wording; no tests or acceptance checks have run.
+The broader verification plan also covers tenant isolation, authentication, payload conflicts, concurrent quota boundaries, out-of-order events, and alert retries. These checks do not substitute for the five official probes.
+
+**Implementation status:** The database foundation, initial migration, API-key authentication, plan seeding, and local tenant bootstrap are implemented. Automated tests cover the current foundation and bootstrap behavior. Billable generation, idempotent usage metering, quota enforcement, usage reporting, Stripe subscription synchronization, and alert delivery remain to be implemented and verified. See BUILDLOG.md for development progress. The official acceptance checks remain to be completed and documented.
+
+Human review remains needed for the project-selected prices and Pro limits, Stripe retrieval and reconciliation behavior, and secure local bootstrap wording.
