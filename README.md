@@ -178,7 +178,7 @@ session. It does not activate Pro locally. A verified webhook is authoritative.
 Duplicate event IDs are safe no-ops, and stale events are reconciled against
 authoritative Stripe subscription state when needed.
 
-Live Stripe test-mode Checkout and webhook delivery were verified locally. Checkout upgraded the tenant to the active Pro plan with the documented limits. A replayed `checkout.session.completed` event received HTTP 200 on both deliveries and remained represented by one row in `stripe_events`. See [EVIDENCE.md](./EVIDENCE.md) for the recorded observations. Live forged-signature rejection has not been independently demonstrated.
+Live Stripe test-mode Checkout and webhook delivery were verified locally. Checkout upgraded the tenant to the active Pro plan with the documented limits. A replayed `checkout.session.completed` event received HTTP 200 on both deliveries and remained represented by one row in `stripe_events`. A live forged-signature request returned HTTP 400 with `{"detail":"Invalid Stripe webhook."}`. Database non-mutation during that specific live probe was not independently verified; automated tests cover rejection without database mutation. See [EVIDENCE.md](./EVIDENCE.md) for the recorded observations and limitations.
 ## Alert outbox
 
 Generation transactionally creates one alert record when API-call or AI-token
@@ -259,6 +259,12 @@ Do not reset the database or delete Docker volumes to apply migrations.
 ## Known limitations
 
 - The alert worker does not run continuously by itself. Invoke the bounded worker command or configure an external scheduler.
-- Live Stripe testing was performed in test mode. Live forged-signature rejection has automated test coverage, but a separate live forged-signature HTTP probe has not been recorded.
+- Live Stripe testing was performed in test mode. The live forged-signature HTTP probe returned `400 Bad Request`; automated tests also cover rejection without database mutation. Database non-mutation during the live probe was not independently verified.
 - The recorded live webhook replay confirms successful HTTP responses and a single stored Stripe event record. It does not independently establish that every possible downstream side effect is idempotent.
 - See `EVIDENCE.md` for the distinction between automated test results, live test-mode observations, and evidence that remains outstanding.
+
+## Author
+
+**Venkata Naga Sri Kalyan Somisetty**
+
+Backend AI Engineer Intern – FlyRank AI

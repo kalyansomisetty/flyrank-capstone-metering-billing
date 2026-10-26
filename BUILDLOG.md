@@ -131,3 +131,9 @@ The existing `checkout.session.completed` event was replayed using Stripe CLI. T
 The application was rebuilt and recreated with Docker Compose after local Stripe configuration changes, and `GET /health` returned `{"status":"ok"}`. Repository hygiene checks confirmed that `.env` is ignored by Git and is not tracked. `git diff --check` passed. The repository-wide secret scan found no Stripe credentials in tracked files. Its remaining matches were mock tenant API-key values used by the tenant-bootstrap unit tests.
 
 These observations verify the live test-mode Checkout upgrade and duplicate event-record prevention for the tested replay. They do not independently verify a live forged-signature request or every possible downstream side effect. Webhook-secret rotation remains to be confirmed.
+
+## Author
+
+**Venkata Naga Sri Kalyan Somisetty**
+
+Backend AI Engineer Intern – FlyRank AI

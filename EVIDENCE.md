@@ -207,3 +207,19 @@ The warning was the existing Starlette/httpx deprecation warning.
    downstream side effect.
 
 The live Stripe Checkout upgrade is now verified.
+
+### Live forged-signature probe — PASS
+
+Verified locally on 26 October 2026.
+
+- Sent a POST request to `/webhooks/stripe` with `Stripe-Signature: invalid` and a synthetic event payload.
+- Observed HTTP `400 Bad Request`.
+- Response body: `{"detail":"Invalid Stripe webhook."}`.
+
+**Result:** The live endpoint rejected the request with an invalid Stripe signature. Database non-mutation for this specific live probe was not independently queried; automated tests cover rejection without database mutation.
+
+## Author
+
+**Venkata Naga Sri Kalyan Somisetty**
+
+Backend AI Engineer Intern – FlyRank AI
