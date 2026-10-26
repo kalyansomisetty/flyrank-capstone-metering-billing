@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     database_url: str
     stripe_secret_key: str
     stripe_webhook_secret: str
+    stripe_pro_price_id: str
+    stripe_checkout_success_url: str
+    stripe_checkout_cancel_url: str
 
     model_config = SettingsConfigDict(
         env_file=".env",

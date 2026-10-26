@@ -55,6 +55,6 @@ Later pytest/EVIDENCE work will cover the five official Section 12 acceptance cr
 
 The broader verification plan also covers tenant isolation, authentication, payload conflicts, concurrent quota boundaries, out-of-order events, and alert retries. These checks do not substitute for the five official probes.
 
-**Implementation status:** The database foundation, initial migration, API-key authentication, plan seeding, and local tenant bootstrap are implemented. Automated tests cover the current foundation and bootstrap behavior. Billable generation, idempotent usage metering, quota enforcement, usage reporting, Stripe subscription synchronization, and alert delivery remain to be implemented and verified. See BUILDLOG.md for development progress. The official acceptance checks remain to be completed and documented.
+**Implementation status:** The database foundation, initial migration, API-key authentication, plan seeding, local tenant bootstrap, billable generation, usage reporting, Stripe Checkout, verified Stripe subscription synchronization, and threshold alert outbox processing are implemented. Automated tests cover these areas where the PostgreSQL integration fixture is available. The official acceptance checks remain to be completed and documented.
 
 Human review remains needed for the project-selected prices and Pro limits, Stripe retrieval and reconciliation behavior, and secure local bootstrap wording.

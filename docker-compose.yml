@@ -22,6 +22,9 @@ services:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-flyrank}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}@db:5432/${POSTGRES_DB:-flyrank}
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-replace-with-stripe-test-secret}
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-replace-with-stripe-webhook-secret}
+      STRIPE_PRO_PRICE_ID: ${STRIPE_PRO_PRICE_ID:-replace-with-stripe-pro-price-id}
+      STRIPE_CHECKOUT_SUCCESS_URL: ${STRIPE_CHECKOUT_SUCCESS_URL:-http://localhost:8000/checkout/success}
+      STRIPE_CHECKOUT_CANCEL_URL: ${STRIPE_CHECKOUT_CANCEL_URL:-http://localhost:8000/checkout/cancel}
     ports:
       - "8000:8000"
     depends_on:
